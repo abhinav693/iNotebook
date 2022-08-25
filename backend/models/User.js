@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const { unsubscribe } = require('../routes/auth');
+// const { unsubscribe } = require('../routes/auth');
 const { Schema } = mongoose;
 
 const UserSchema = new Schema({
@@ -24,5 +24,4 @@ const UserSchema = new Schema({
   });
 
   const User = mongoose.model('user', UserSchema)
-  User.createIndexes()
   module.exports = User
