@@ -1,18 +1,25 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
+import { useHistory } from "react-router-dom";
 import noteContext from "../context/notes/noteContext"
 import AddNote from "./AddNote";
 import Noteitem from "./Noteitem";
 
-const Notes = () => {
+const Notes = (props) => {
     const context = useContext(noteContext)
     const {notes, getNotes, editNote} = context
     const [note, setNote] = useState({id:"", edit_title:"", edit_description:"", edit_tag:"default"})
     const ref = useRef(null)
     const refClose = useRef(null)
 
+    let history = useHistory()
 
     useEffect(() => {
+      if(localStorage.getItem('token')){
         getNotes()
+      }
+      else{
+        history.push("/login")
+      }
     })
 
     const updateNote = (currentNote) =>{
@@ -25,6 +32,7 @@ const Notes = () => {
         console.log("Updating the note ", note)
         editNote(note.id, note.edit_title, note.edit_description, note.edit_tag)
         refClose.current.click()
+        props.showAlert("Updated Successfully", "success")
     }
 
     const onChange = (e) =>{
@@ -33,7 +41,7 @@ const Notes = () => {
 
   return (
     <>
-    <AddNote />
+    <AddNote showAlert={props.showAlert}/>
     <button ref={ref} type="button" className="btn btn-primary d-none" data-bs-toggle="modal" data-bs-target="#exampleModal">
          Launch demo modal
     </button>
@@ -59,6 +67,8 @@ const Notes = () => {
             value={note.title}
             aria-describedby="emailHelp"
             onChange={onChange}
+            minLength={5}
+            required
           />
           </div>
         <div className="mb-3">
@@ -72,6 +82,8 @@ const Notes = () => {
             name="edit_description"
             value={note.description}
             onChange={onChange}
+            minLength={5}
+            required
           />
         </div>
         <div className="mb-3">
@@ -92,7 +104,7 @@ const Notes = () => {
         </div>
         <div className="modal-footer">
             <button ref={refClose} type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            <button type="button" className="btn btn-primary" onClick={handleClick}>Update Note</button>
+            <button disabled={note.edit_title.length < 5 || note.edit_description.length < 5} type="button" className="btn btn-primary" onClick={handleClick}>Update Note</button>
         </div>
         </div>
     </div>
@@ -100,8 +112,11 @@ const Notes = () => {
 
     <div className="row my-3">
       <h2>Your notes</h2>
+      <div className="container">
+      {notes.length === 0 && 'No Notes to display'}
+      </div>
       {notes.map((note) => {
-        return <Noteitem key={note._id} updateNote={updateNote} note={note} />;
+        return <Noteitem key={note._id} updateNote={updateNote} note={note} showAlert={props.showAlert}/>;
       })}
     </div>
     </> 

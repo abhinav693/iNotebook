@@ -14,8 +14,7 @@ const NoteState = (props) => {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        "auth-token":
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjMwNjE3MTAwYzEwNTA3ZWUxMmI0ZWM0In0sImlhdCI6MTY2MTQ4MjE0OX0.amg79JvguYeexTVHFO7b639-WfpOMEvfNU5Y-3ti8xU",
+        "auth-token": localStorage.getItem('token')
       },
     });
     const json = await response.json();
@@ -30,25 +29,12 @@ const NoteState = (props) => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "auth-token":
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjMwNjE3MTAwYzEwNTA3ZWUxMmI0ZWM0In0sImlhdCI6MTY2MTQ4MjE0OX0.amg79JvguYeexTVHFO7b639-WfpOMEvfNU5Y-3ti8xU",
+        "auth-token": localStorage.getItem('token')
       },
       body: JSON.stringify({ title, description, tag }),
     });
 
-    const json = await response.json()
-    console.log(json)
-
-    const note = {
-      _id: "630871b8e6880f2f825450f3",
-      user: "630617100c10507ee12b4ec4",
-      title: title,
-      description: description,
-      tag: tag,
-      date: "2022-08-26T07:09:44.739Z",
-      __v: 0,
-    };
-
+    const note = await response.json()
     setNotes(notes.concat(note));
   };
 
@@ -60,7 +46,7 @@ const NoteState = (props) => {
         headers: {
           "Content-Type": "application/json",
           "auth-token":
-            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjMwNjE3MTAwYzEwNTA3ZWUxMmI0ZWM0In0sImlhdCI6MTY2MTQ4MjE0OX0.amg79JvguYeexTVHFO7b639-WfpOMEvfNU5Y-3ti8xU",
+ localStorage.getItem('token')
         },
   
       });
@@ -82,8 +68,7 @@ const NoteState = (props) => {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
-        "auth-token":
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjMwNjE3MTAwYzEwNTA3ZWUxMmI0ZWM0In0sImlhdCI6MTY2MTQ4MjE0OX0.amg79JvguYeexTVHFO7b639-WfpOMEvfNU5Y-3ti8xU",
+        "auth-token": localStorage.getItem('token')
       },
 
       body: JSON.stringify({ title, description, tag }),
